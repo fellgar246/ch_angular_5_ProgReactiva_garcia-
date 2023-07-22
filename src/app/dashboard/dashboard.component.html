@@ -1,0 +1,33 @@
+<mat-drawer-container class="example-container" autosize>
+
+  <p>
+    <mat-toolbar>
+    <button (click)="drawer.toggle()"  mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="logo"></div>
+  </mat-toolbar>
+  </p>
+
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <h1>Menú</h1>
+    <div class="optionsMenu">
+      <a>
+        <p>Home</p>
+      </a>
+      <a>
+        <p>Alumnos</p>
+      </a>
+      <a>
+        <p>Cursos</p>
+      </a>
+      <a>
+        <p>Mi Perfil</p>
+      </a>
+    </div>
+  </mat-drawer>
+
+  <app-users></app-users>
+
+</mat-drawer-container>
+
