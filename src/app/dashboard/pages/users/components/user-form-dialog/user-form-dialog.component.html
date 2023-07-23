@@ -1,4 +1,10 @@
-<h1 mat-dialog-title>Agragar Alumno</h1>
+<h1 mat-dialog-title>
+  {{
+    editingUser
+      ? "Editando a" + editingUser.name + " " + editingUser.lastName
+      : "Creando usuario"
+  }}
+</h1>
 <div mat-dialog-content>
   <form [formGroup]="userForm" >
     <div class="formInputs">

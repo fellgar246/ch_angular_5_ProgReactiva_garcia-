@@ -9,6 +9,9 @@ import { User } from '../../models';
   styleUrls: ['./user-form-dialog.component.scss']
 })
 export class UserFormDialogComponent {
+
+  editingUser?: User;
+
   nameControl = new FormControl<String | null>(null, [Validators.required, Validators.minLength(2)]);
   lastNameControl = new FormControl<String | null>(null, [Validators.required]);
   emailControl = new FormControl<String | null>(null, [Validators.required, Validators.email]);
@@ -30,6 +33,7 @@ export class UserFormDialogComponent {
   ) {
 
     if(this.data){
+      this.editingUser = this.data;
       this.nameControl.setValue(this.data.name);
       this.lastNameControl.setValue(this.data.lastName);
       this.emailControl.setValue(this.data.email);

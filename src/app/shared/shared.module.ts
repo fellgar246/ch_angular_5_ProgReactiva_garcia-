@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule} from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { ControlErrorMessagePipe } from './pipes/control-error-message.pipe';
@@ -32,6 +33,7 @@ import { TitlesDirective } from './directives/titles.directive';
     MatIconModule,
     MatTableModule,
     MatSelectModule,
+    MatCardModule,
     FullNamePipe,
     ControlErrorMessagePipe,
     TitlesDirective
