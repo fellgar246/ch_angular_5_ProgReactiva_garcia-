@@ -1,36 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UserFormDialogComponent } from './components/user-form-dialog/user-form-dialog.component';
 import { User } from './models';
+import { UserService } from './user.service';
+import { NotifierService } from '../../../core/services/notifier.service';
+import { Observable, map, tap } from 'rxjs';
 
-const ELEMENT_DATA: User[] = [
-  {
-    id: 1,
-    name: 'Juan',
-    lastName: 'Perez',
-    email: 'juan@mail.com',
-    age: 25,
-    course: 'Angular',
-  },
-  {
-    id: 2,
-    name: 'Maria',
-    lastName: 'Gomez',
-    email: 'maria@email.com',
-    age: 30,
-    course: 'React',
-  },
-];
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent {
-  public users: User[] = ELEMENT_DATA
+export class UsersComponent implements OnDestroy {
+  public users: Observable<User[]>;
 
-  constructor(private matDialog: MatDialog ) { }
+  constructor(
+    private matDialog: MatDialog,
+    private userService: UserService,
+    private notifier: NotifierService,
+    ) {
+      this.users = this.userService.getUsers().pipe(
+        tap((value)=> console.log('Recibimos los usuarios', value)),
+        map((value) => value.map((user) =>({
+          ...user,
+          name: user.name.toUpperCase()
+          }))
+          )
+        )
+      this.userService.loadUsers();
+      // this.userService.getUsers().subscribe({
+      //   next: (value) => {
+      //     this.users = value;
+      //   }
+      // });
+    }
+
+  ngOnDestroy(): void {
+
+  }
 
   onCreateUser(): void {
     this.matDialog
@@ -42,18 +50,27 @@ export class UsersComponent {
         next: (value) => {
           if(value){
 
-            this.users = [
-              ...this.users,
-              {
-                id: this.users.length + 1,
-                name: value.name,
-                email: value.email,
-                lastName: value.lastName,
-                age: value.age,
-                course: value.course,
-              }
-            ];
-
+            // this.users = [
+            //   ...this.users,
+            //   {
+            //     id: this.users.length + 1,
+            //     name: value.name,
+            //     email: value.email,
+            //     lastName: value.lastName,
+            //     age: value.age,
+            //     course: value.course,
+            //   }
+            // ];
+            this.userService.createUser({
+              // id: this.users.length + 1,
+              id: new Date().getTime(),
+              name: value.name,
+              email: value.email,
+              lastName: value.lastName,
+              age: value.age,
+              course: value.course,
+            })
+            this.notifier.showSuccess('Usuarios cargados', 'Los usuarios se cargaron correctamente');
             console.log('Recibimos el valor',value);
           }else {
             console.log('No recibimos nada');
@@ -64,7 +81,7 @@ export class UsersComponent {
 
   onDeleteUser(userToDelete: User): void {
     if(confirm(`¿Está seguro de eliminar al usuario ${userToDelete.name}?`)){
-      this.users = this.users.filter((user) => user.id !== userToDelete.id);
+      // this.users = this.users.filter((user) => user.id !== userToDelete.id);
     }
   }
 
@@ -77,11 +94,11 @@ export class UsersComponent {
     .subscribe({
       next: (userUpdated) => {
         if(userUpdated){
-          this.users = this.users.map((user) => {
-            return user.id === userToEdit.id
-            ? { ...user, ...userUpdated }
-            : user;
-          })
+          // this.users = this.users.map((user) => {
+          //   return user.id === userToEdit.id
+          //   ? { ...user, ...userUpdated }
+          //   : user;
+          // })
         }
       }
     })
