@@ -4,7 +4,7 @@ import { CourseFormDialogComponent } from './components/course-form-dialog/cours
 import { Course } from './models';
 import { CourseService } from './course.service';
 import { NotifierService } from '../../../core/services/notifier.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -20,7 +20,9 @@ export class CoursesComponent {
     private notifier: NotifierService,
     ) {
       this.courseService.loadCourses();
-      this.courses = this.courseService.getCourses();
+      this.courses = this.courseService.getCourses().pipe(
+        map((courses) => courses.filter((course) => course.typeCourse === 'Frontend'))
+      );
     }
 
   onCreateCourse(): void {

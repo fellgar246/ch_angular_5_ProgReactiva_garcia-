@@ -13,6 +13,16 @@ const COURSE_DB: Observable<Course[]> = of([
     nameCourse: "React",
     typeCourse: "Frontend",
   },
+  {
+    id: 3,
+    nameCourse: "Mongo",
+    typeCourse: "Backend",
+  },
+  {
+    id: 4,
+    nameCourse: "SQL",
+    typeCourse: "Bases de Datos",
+  },
 ]).pipe(delay(1000));
 
 @Injectable({
@@ -27,7 +37,7 @@ export class CourseService {
 
   loadCourses(): void {
     COURSE_DB.subscribe({
-      next: (courseFromDb) => this._course$.next(courseFromDb)
+      next: (courseFromDb: Course[]) => this._course$.next(courseFromDb)
     })
   }
 
